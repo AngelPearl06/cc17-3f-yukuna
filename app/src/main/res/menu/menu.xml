@@ -1,12 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Planner"
-        android:id="@+id/planner"
-        android:icon="@drawable/planner"/>
-    <item android:title="Scanner"
-        android:id="@+id/scanner"
-        android:icon="@drawable/scanner"/>
-    <item android:title="Manager"
-        android:id="@+id/manager"
-        android:icon="@drawable/manager"/>
 </menu>
