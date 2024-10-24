@@ -39,20 +39,28 @@ class LoginActivity : AppCompatActivity() {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
+            if (login != null) {
+                login.isEnabled = loginState.isDataValid
+            }
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                if (username != null) {
+                    username.error = getString(loginState.usernameError)
+                }
             }
             if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+                if (password != null) {
+                    password.error = getString(loginState.passwordError)
+                }
             }
         })
 
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
+            if (loading != null) {
+                loading.visibility = View.GONE
+            }
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error)
             }
@@ -65,35 +73,51 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        username.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                username.text.toString(),
-                password.text.toString()
-            )
+        if (username != null) {
+            username.afterTextChanged {
+                if (password != null) {
+                    loginViewModel.loginDataChanged(
+                        username.text.toString(),
+                        password.text.toString()
+                    )
+                }
+            }
         }
 
-        password.apply {
+        password?.apply {
             afterTextChanged {
-                loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    password.text.toString()
-                )
+                if (username != null) {
+                    loginViewModel.loginDataChanged(
+                        username.text.toString(),
+                        password.text.toString()
+                    )
+                }
             }
 
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
+                        if (username != null) {
+                            loginViewModel.login(
+                                username.text.toString(),
+                                password.text.toString()
+                            )
+                        }
                 }
                 false
             }
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+            if (login != null) {
+                login.setOnClickListener {
+                    if (loading != null) {
+                        loading.visibility = View.VISIBLE
+                    }
+                    if (password != null) {
+                        if (username != null) {
+                            loginViewModel.login(username.text.toString(), password.text.toString())
+                        }
+                    }
+                }
             }
         }
     }
